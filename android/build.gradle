@@ -22,12 +22,19 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "com.amap.api:3dmap:6.6.0"
     implementation "com.amap.api:location:4.4.0"
+    implementation 'com.amap.api:search:5.0.0'
+
     //
     compileOnly "androidx.appcompat:appcompat:${project.appcompatVersion}"
     compileOnly "com.alibaba:fastjson:${project.fastjsonLibVersion}"

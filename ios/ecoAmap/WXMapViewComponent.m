@@ -80,9 +80,11 @@ static const void *componentKey = &componentKey;
 @end
 
 
-@interface WXMapViewComponent()
+@interface WXMapViewComponent() <AMapSearchDelegate>
 
 @property (nonatomic, strong) MAMapView *mapView;
+@property (nonatomic, strong) AMapSearchAPI *search;
+@property (nonatomic, copy) WXModuleCallback callback;
 
 @end
 
@@ -144,9 +146,10 @@ static const void *componentKey = &componentKey;
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
     CGSize windowSize = window.rootViewController.view.frame.size;
     self.mapView = [[MAMapView alloc] initWithFrame:CGRectMake(0, 0, windowSize.width, windowSize.height)];
-    self.mapView.showsUserLocation = _showGeolocation;
+    self.mapView.showsUserLocation = YES;
+    self.mapView.userTrackingMode = MAUserTrackingModeFollow;
     self.mapView.delegate = self;
-    
+    self.mapView.userTrackingMode = 1;
     return self.mapView;
 }
 
@@ -154,7 +157,7 @@ static const void *componentKey = &componentKey;
 {
     [super viewDidLoad];
     self.mapView.showsScale = _showScale;
-    [self.mapView setCenterCoordinate:_centerCoordinate];
+//    [self.mapView setCenterCoordinate:_centerCoordinate];
     [self.mapView setZoomLevel:_zoomLevel];
 }
 
@@ -168,7 +171,6 @@ static const void *componentKey = &componentKey;
         [self addMarker:(WXMapViewMarkerComponent *)subcomponent];
     }
 }
-
 
 - (void)dealloc
 {
@@ -312,7 +314,7 @@ static const void *componentKey = &componentKey;
 #pragma mark - component interface
 - (void)setAPIKey:(NSString *)appKey
 {
-    [AMapServices sharedServices].apiKey = appKey;
+//    [AMapServices sharedServices].apiKey = appKey;
 }
 
 - (void)setCenter:(NSArray *)center
@@ -333,12 +335,56 @@ static const void *componentKey = &componentKey;
 #pragma mark - publish method
 - (NSDictionary *)getUserLocation
 {
+    CLLocationCoordinate2D location = [self.mapView userLocation].coordinate;
+
     if(self.mapView.userLocation.updating && self.mapView.userLocation.location) {
         NSArray *coordinate = @[[NSNumber numberWithDouble:self.mapView.userLocation.location.coordinate.longitude],[NSNumber numberWithDouble:self.mapView.userLocation.location.coordinate.latitude]];
         NSDictionary *userDic = @{@"result":@"success",@"data":@{@"position":coordinate,@"title":@""}};
         return userDic;
     }
     return @{@"resuldt":@"false",@"data":@""};
+}
+
+- (void)searchAroundLocation:(WXModuleCallback)callback {
+    
+    if (self.search == nil) {
+        self.search = [[AMapSearchAPI alloc] init];
+        self.search.delegate = self;
+    }
+    self.callback = callback;
+    AMapPOIAroundSearchRequest *request = [[AMapPOIAroundSearchRequest alloc] init];
+    MAUserLocation *location = self.mapView.userLocation;
+    request.location = [AMapGeoPoint locationWithLatitude:location.coordinate.latitude longitude:location.coordinate.longitude];
+    request.sortrule = 0; // 按距离排序
+    request.requireExtension = YES;
+    
+    [self.search AMapPOIAroundSearch:request];
+}
+
+#pragma mark - AMapSearchDelegate
+- (void)onPOISearchDone:(AMapPOISearchBaseRequest *)request response:(AMapPOISearchResponse *)response {
+    NSMutableArray *result = [NSMutableArray array];
+    for (AMapPOI *poi in response.pois) {
+        NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+        NSLog(@"%@--%@", poi.address, poi.name);
+        [dict setValue:@(poi.location.latitude) forKey:@"latitude"];
+        [dict setValue:@(poi.location.longitude) forKey:@"longitude"];
+        [dict setValue:[NSString stringWithFormat:@"%@,%@", @(poi.location.longitude), @(poi.location.latitude)] forKey:@"location"];
+        [dict setValue:poi.name forKey:@"name"];
+        [dict setValue:poi.address forKey:@"address"];
+        [dict setValue:@(poi.distance) forKey:@"distance"];
+        [dict setValue:poi.district forKey:@"district"];
+        [result addObject:dict];
+    }
+    self.callback(result);
+}
+
+- (void)onNearbySearchDone:(AMapNearbySearchRequest *)request response:(AMapNearbySearchResponse *)response {
+    NSLog(@"%@", request);
+}
+
+- (void)AMapSearchRequest:(id)request didFailWithError:(NSError *)error {
+    NSLog(@"%@", error);
 }
 
 #pragma mark - private method
@@ -489,6 +535,18 @@ static const void *componentKey = &componentKey;
     if (_isDragend) {
         [self fireEvent:@"dragend" params:[NSDictionary dictionary]];
     }
+}
+
+- (void)mapViewWillStartLoadingMap:(MAMapView *)mapView {
+    NSLog(@"地图开始加载");
+}
+
+- (void)mapViewDidFinishLoadingMap:(MAMapView *)mapView {
+    NSLog(@"地图加载成功");
+}
+
+- (void)mapViewDidFailLoadingMap:(MAMapView *)mapView withError:(NSError *)error {
+    NSLog(@"%@", error);
 }
 
 #pragma mark - Overlay

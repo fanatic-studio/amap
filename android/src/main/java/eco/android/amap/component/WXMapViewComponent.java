@@ -50,6 +50,8 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import app.eco.framework.extend.module.ecoBase;
+import app.eco.framework.extend.module.ecoJson;
 import eco.android.amap.util.Constant;
 
 public class WXMapViewComponent extends WXVContainer<FrameLayout> implements LocationSource,
@@ -68,7 +70,7 @@ public class WXMapViewComponent extends WXVContainer<FrameLayout> implements Loc
   private boolean isScaleEnable = true;
   private boolean isZoomEnable = true;
   private boolean isCompassEnable = true;
-  private boolean isMyLocationEnable = false;
+  private boolean isMyLocationEnable = true; // 临时修改：这边没有
   private float mZoomLevel;
   private int mGesture = 0xF;
   private boolean isIndoorSwitchEnable = false;
@@ -316,18 +318,14 @@ public class WXMapViewComponent extends WXVContainer<FrameLayout> implements Loc
   }
 
   @WXComponentProp(name = Constant.Name.KEYS)
-  public void setApiKey(String keys) {
-    try {
-      JSONObject object = new JSONObject(keys);
-      String key = object.optString("android");
-      if (!TextUtils.isEmpty(key)) {
-        MapsInitializer.setApiKey(key);
-        AMapLocationClient.setApiKey(key);
-        //ServiceSettings.getInstance().setApiKey(key);
-        WXLogUtils.d(TAG, "Set API key success");
-      }
-    } catch (JSONException e) {
-      e.printStackTrace();
+  public void setApiKey() {
+    com.alibaba.fastjson.JSONObject umeng = ecoJson.parseObject(ecoBase.config.getObject("amap").get("android"));
+    String appKey = umeng.getString("appKey");
+    if (!TextUtils.isEmpty(appKey)) {
+      MapsInitializer.setApiKey(appKey);
+      AMapLocationClient.setApiKey(appKey);
+      //ServiceSettings.getInstance().setApiKey(key);
+      WXLogUtils.d(TAG, "Set API key success");
     }
 
   }

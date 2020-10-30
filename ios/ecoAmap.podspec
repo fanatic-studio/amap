@@ -27,5 +27,7 @@ Pod::Spec.new do |s|
   
   s.dependency 'AMap3DMap','6.6.0'
   s.dependency 'AMapFoundation'
+  s.dependency 'AMapSearch'
+  s.dependency 'AMapLocation'
 
 end

@@ -11,10 +11,13 @@
 #import "WXMapRenderer.h"
 #import <MAMapKit/MAMapKit.h>
 #import <AMapFoundationKit/AMapFoundationKit.h>
+#import <AMapSearchKit/AMapSearchKit.h>
 
 @interface WXMapViewComponent : WXComponent<MAMapViewDelegate>
 
 - (NSDictionary *)getUserLocation;
+
+- (void)searchAroundLocation:(WXModuleCallback)callback;
 
 
 #pragma - Marker

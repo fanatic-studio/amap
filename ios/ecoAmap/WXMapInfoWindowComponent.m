@@ -11,7 +11,7 @@
 #import "WXMapInfoWindow.h"
 #import <WeexPluginLoader/WeexPluginLoader.h>
 
-WX_PlUGIN_EXPORT_COMPONENT(vd-amap-info-window, WXMapInfoWindowComponent)
+WX_PlUGIN_EXPORT_COMPONENT(eco-amap-info-window, WXMapInfoWindowComponent)
 @implementation WXMapInfoWindowComponent
 @synthesize annotation = _annotation;
 @synthesize identifier = _identifier;

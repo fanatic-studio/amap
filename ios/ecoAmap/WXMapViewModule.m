@@ -11,7 +11,7 @@
 #import "WXConvert+AMapKit.h"
 #import <WeexPluginLoader/WeexPluginLoader.h>
 
-WX_PlUGIN_EXPORT_MODULE(vdAmap, WXMapViewModule)
+WX_PlUGIN_EXPORT_MODULE(ecoAmap, WXMapViewModule)
 @implementation WXMapViewModule
 
 @synthesize weexInstance;

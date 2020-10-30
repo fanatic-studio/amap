@@ -12,7 +12,7 @@
 #import "WXConvert+AMapKit.h"
 #import <WeexPluginLoader/WeexPluginLoader.h>
 
-WX_PlUGIN_EXPORT_COMPONENT(vd-amap-marker, WXMapViewMarkerComponent)
+WX_PlUGIN_EXPORT_COMPONENT(eco-amap-marker, WXMapViewMarkerComponent)
 @implementation WXMapViewMarkerComponent
 
 @synthesize clickEvent = _clickEvent;

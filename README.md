@@ -3,16 +3,16 @@
 ## 安装
 
 ```shell script
-vd plugin install https://github.com/ivde/amap
+eco plugin install https://github.com/kjeco/amap
 ```
 
 ## 卸载
 
 ```shell script
-vd plugin uninstall https://github.com/ivde/amap
+eco plugin uninstall https://github.com/kjeco/amap
 ```
 
-## 组件 vd-amap 属性
+## 组件 eco-amap 属性
 
 | 属性 | 类型 | Demo | 描述 |
 | --- | --- | --- | --- |
@@ -34,7 +34,7 @@ vd plugin uninstall https://github.com/ivde/amap
 
 **建议你前往[高德开发者社区](http://lbs.amap.com/)申明你对应产品的Key，保证地图正常工作**
 
-### 组件 vd-amap 事件
+### 组件 eco-amap 事件
 
 **zoomchange** 用户缩放地图时触发该事件
 事件格式
@@ -54,7 +54,7 @@ vd plugin uninstall https://github.com/ivde/amap
 **dragend**
 用户拖动地图时触发该事件
 
-## 组件 vd-amap-marker 属性
+## 组件 eco-amap-marker 属性
 
 | 属性 | 类型 | Demo | 描述 |
 | --- | --- | --- | --- |
@@ -64,12 +64,12 @@ vd plugin uninstall https://github.com/ivde/amap
 | hideCallout | boolean | true | 设置marker是否可点击 |
 | open | boolean | true | 是否显示InfoWindow |
 
-### 组件 vd-amap-marker 事件
+### 组件 eco-amap-marker 事件
 
 **click**
 点击marker时触发
 
-## 组件 vd-amap-info-window 属性
+## 组件 eco-amap-info-window 属性
 
 | 属性 | 类型 | 描述 |
 | --- | --- | --- |
@@ -77,7 +77,7 @@ vd plugin uninstall https://github.com/ivde/amap
 | position | String | InfoWindow位置 |
 | offset | String | InfoWindow偏移量 |
 
-## 组件 vd-amap-circle 属性
+## 组件 eco-amap-circle 属性
 
 | 属性 | 类型 | 描述 |
 | --- | --- | --- |
@@ -87,7 +87,7 @@ vd plugin uninstall https://github.com/ivde/amap
 | strokeWidth | float | 描边宽度 |
 | radius | float | 半径 |
 
-## 组件 vd-amap-polygon 属性
+## 组件 eco-amap-polygon 属性
 
 | 属性 | 类型 | 描述 |
 | --- | --- | --- |
@@ -96,7 +96,7 @@ vd plugin uninstall https://github.com/ivde/amap
 | fillColor | String | 填充颜色 |
 | strokeWidth | float | 描边宽度 |
 
-## 组件 vd-amap-polyline 属性
+## 组件 eco-amap-polyline 属性
 
 | 属性 | 类型 | 描述 |
 | --- | --- | --- |
@@ -108,7 +108,7 @@ vd plugin uninstall https://github.com/ivde/amap
 ## 模块引入
 
 ```
-const amap = app.requireModule('vd/amap');
+const amap = app.requireModule('eco/amap');
 ```
 
 ##### getUserLocation(completeFunc,errorFunc)
@@ -139,12 +139,12 @@ const amap = app.requireModule('vd/amap');
 ```
 <template>
     <div style="align-items: center">
-        <vd-amap style="width:750px;height:800px"
+        <eco-amap style="width:750px;height:800px"
               :sdkKey="{ios:'5f30eead659fa7cd97a92865e560a18a','android':'232624b2ee61e42d5809616a08b6f5d5'}"
               :center="point.position"
               :zoom="15">
-            <vd-amap-marker :position="point.position" :title="point.title"></vd-amap-marker>
-        </vd-amap>
+            <eco-amap-marker :position="point.position" :title="point.title"></eco-amap-marker>
+        </eco-amap>
     </div>
 </template>
 <script>

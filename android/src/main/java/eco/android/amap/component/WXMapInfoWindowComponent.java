@@ -1,4 +1,4 @@
-package vd.android.amap.component;
+package eco.android.amap.component;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
@@ -23,7 +23,7 @@ import org.json.JSONException;
 
 import java.util.Map;
 
-import vd.android.amap.util.Constant;
+import eco.android.amap.util.Constant;
 
 /**
  * Created by budao on 2017/2/9.

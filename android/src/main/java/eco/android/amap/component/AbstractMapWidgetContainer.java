@@ -1,4 +1,4 @@
-package vd.android.amap.component;
+package eco.android.amap.component;
 
 import com.amap.api.maps.TextureMapView;
 import com.taobao.weex.WXSDKInstance;

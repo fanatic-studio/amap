@@ -1,4 +1,4 @@
-package vd.android.amap.module;
+package eco.android.amap.module;
 
 import androidx.annotation.Nullable;
 import android.util.Log;
@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import vd.android.amap.component.WXMapPolygonComponent;
+import eco.android.amap.component.WXMapPolygonComponent;
 
 
 /**

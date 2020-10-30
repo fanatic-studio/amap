@@ -1,4 +1,4 @@
-package vd.android.amap.util;
+package eco.android.amap.util;
 
 /**
  * Created by aoxiao on 2017/1/4.

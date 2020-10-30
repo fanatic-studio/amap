@@ -1,6 +1,6 @@
 {
 	"desc": "迁移自weex官方组件",
-	"requireFormatName": "vdAmap",
-	"requireName": "vd/amap",
+	"requireFormatName": "ecoAmap",
+	"requireName": "eco/amap",
 	"title": "高德地图"
 }

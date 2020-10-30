@@ -1,4 +1,4 @@
-package vd.android.amap.component;
+package eco.android.amap.component;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -18,7 +18,7 @@ import com.taobao.weex.ui.component.WXVContainer;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import vd.android.amap.util.Constant;
+import eco.android.amap.util.Constant;
 
 /**
  * Created by budao on 2017/3/3.

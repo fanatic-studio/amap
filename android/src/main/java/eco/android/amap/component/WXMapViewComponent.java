@@ -1,4 +1,4 @@
-package vd.android.amap.component;
+package eco.android.amap.component;
 
 import android.app.Activity;
 import android.content.Context;
@@ -50,7 +50,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import vd.android.amap.util.Constant;
+import eco.android.amap.util.Constant;
 
 public class WXMapViewComponent extends WXVContainer<FrameLayout> implements LocationSource,
     AMapLocationListener {

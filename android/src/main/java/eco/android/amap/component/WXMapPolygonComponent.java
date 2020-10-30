@@ -1,4 +1,4 @@
-package vd.android.amap.component;
+package eco.android.amap.component;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -8,8 +8,8 @@ import android.view.ViewStub;
 
 import com.amap.api.maps.TextureMapView;
 import com.amap.api.maps.model.LatLng;
-import com.amap.api.maps.model.Polyline;
-import com.amap.api.maps.model.PolylineOptions;
+import com.amap.api.maps.model.Polygon;
+import com.amap.api.maps.model.PolygonOptions;
 import com.taobao.weex.WXSDKInstance;
 import com.taobao.weex.ui.action.BasicComponentData;
 import com.taobao.weex.ui.component.WXComponentProp;
@@ -20,25 +20,26 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 
-import vd.android.amap.util.Constant;
+import eco.android.amap.util.Constant;
 
 /**
  * Created by budao on 2017/3/3.
  */
-public class WXMapPolyLineComponent extends AbstractMapWidgetComponent<Polyline> {
+public class WXMapPolygonComponent extends AbstractMapWidgetComponent<Polygon> {
   ArrayList<LatLng> mPosition = new ArrayList<>();
   private int mColor = 0;
-  private String mStyle;
-  private float mWeight = 1.0f;
+  private int mFillColor = 0;
+  private float mWidth = 1.0f;
 
-  public WXMapPolyLineComponent(WXSDKInstance instance, WXVContainer parent, BasicComponentData basicComponentData) {
+  public WXMapPolygonComponent(WXSDKInstance instance, WXVContainer parent, BasicComponentData basicComponentData) {
     super(instance, parent, basicComponentData);
   }
+
 
   @Override
   protected View initComponentHostView(@NonNull Context context) {
     if (getParent() != null && getParent() instanceof WXMapViewComponent) {
-      initPolyLine();
+      initPolygon();
     }
     // FixMe： 只是为了绕过updateProperties中的逻辑检查
     return new ViewStub(context);
@@ -61,9 +62,9 @@ public class WXMapPolyLineComponent extends AbstractMapWidgetComponent<Polyline>
     execAfterWidgetReady("setPath", new Runnable() {
       @Override
       public void run() {
-        Polyline polyline = getWidget();
-        if (polyline != null) {
-          polyline.setPoints(mPosition);
+        Polygon polygon = getWidget();
+        if (polygon != null) {
+          polygon.setPoints(mPosition);
         }
       }
     });
@@ -75,55 +76,57 @@ public class WXMapPolyLineComponent extends AbstractMapWidgetComponent<Polyline>
     execAfterWidgetReady("setStrokeColor", new Runnable() {
       @Override
       public void run() {
-        Polyline polyline = getWidget();
-        if (polyline != null) {
-          polyline.setColor(mColor);
+        Polygon polygon = getWidget();
+        if (polygon != null) {
+          polygon.setStrokeColor(mColor);
+        }
+      }
+    });
+  }
+
+  @WXComponentProp(name = Constant.Name.FILL_COLOR)
+  public void setFillColor(String param) {
+    mFillColor = Color.parseColor(param);
+    execAfterWidgetReady("setFillColor", new Runnable() {
+      @Override
+      public void run() {
+        Polygon polygon = getWidget();
+        if (polygon != null) {
+          polygon.setFillColor(mFillColor);
         }
       }
     });
   }
 
   @WXComponentProp(name = Constant.Name.STROKE_WIDTH)
-  public void setStrokeWeight(float param) {
-    mWeight = param;
-    execAfterWidgetReady("setStrokeWeight", new Runnable() {
+  public void setStrokeWidth(float param) {
+    mWidth = param;
+    execAfterWidgetReady("setStrokeWidth", new Runnable() {
       @Override
       public void run() {
-        Polyline polyline = getWidget();
-        if (polyline != null) {
-          polyline.setWidth(mWeight);
+        Polygon polygon = getWidget();
+        if (polygon != null) {
+          polygon.setStrokeWidth(mWidth);
         }
       }
     });
   }
 
-  @WXComponentProp(name = Constant.Name.STROKE_STYLE)
-  public void setStrokeStyle(String param) {
-    mStyle = param;
-    execAfterWidgetReady("setStrokeStyle", new Runnable() {
+  private void initPolygon() {
+    postMapOperationTask((WXMapViewComponent) getParent(), new WXMapViewComponent.MapOperationTask() {
       @Override
-      public void run() {
-        Polyline polyline = getWidget();
-        if (polyline != null) {
-          polyline.setDottedLine("dashed".equalsIgnoreCase(mStyle));
-        }
+      public void execute(TextureMapView mapView) {
+        PolygonOptions polygonOptions = new PolygonOptions();
+        polygonOptions.addAll(mPosition);
+        polygonOptions.strokeColor(mColor);
+        polygonOptions.strokeWidth(mWidth);
+        setWidget(mapView.getMap().addPolygon(polygonOptions));
       }
     });
   }
 
-  private void initPolyLine() {
-    if (getParent() != null && getParent() instanceof WXMapViewComponent) {
-      postMapOperationTask((WXMapViewComponent) getParent(), new WXMapViewComponent.MapOperationTask() {
-        @Override
-        public void execute(TextureMapView mapView) {
-          PolylineOptions polylineOptions = new PolylineOptions();
-          polylineOptions.setPoints(mPosition);
-          polylineOptions.color(mColor);
-          polylineOptions.width(mWeight);
-          polylineOptions.setDottedLine("dashed".equalsIgnoreCase(mStyle));
-          setWidget(mapView.getMap().addPolyline(polylineOptions));
-        }
-      });
-    }
+  public boolean contains(LatLng latLng) {
+      Polygon polygon = getWidget();
+      return polygon != null && polygon.contains(latLng);
   }
 }

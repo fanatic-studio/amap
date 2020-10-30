@@ -1,4 +1,4 @@
-package vd.android.amap.component;
+package eco.android.amap.component;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -43,8 +43,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import vd.android.amap.util.Constant;
-import vd.android.amap.util.GifDecoder;
+import eco.android.amap.util.Constant;
+import eco.android.amap.util.GifDecoder;
 
 /**
  * Created by budao on 2017/2/9.

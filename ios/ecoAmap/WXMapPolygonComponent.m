@@ -10,7 +10,7 @@
 #import "NSDictionary+WXMap.h"
 #import <WeexPluginLoader/WeexPluginLoader.h>
 
-WX_PlUGIN_EXPORT_COMPONENT(vd-amap-polygon, WXMapPolygonComponent)
+WX_PlUGIN_EXPORT_COMPONENT(eco-amap-polygon, WXMapPolygonComponent)
 @implementation WXMapPolygonComponent
 
 @synthesize fillColor = _fillColor;
